@@ -1,33 +1,28 @@
+import java.io.*;
 import java.util.*;
 public class Main {
     static int max=0;
-
-    public static void doCombination(int[][]r, int re, int index,int limit, int sum){
-
-
-//        System.out.println(r[index][0]+" "+r[index][1]+" "+re+" "+ sum+" "+max);
-        if(index==limit)return;
-        sum+=r[index][1];
-        if(re >=0){
-            if(max<sum) max = sum;
-        }
-        else return ;
-//        System.out.println(re+"  "+sum);
-        doCombination(r,re-r[index][0],index,limit,sum);
-        doCombination(r,re-r[index][0],index+1,limit,sum);
-        doCombination(r,re,index+1,limit,0);
-
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String z[] = br.readLine().split(" ");
+        int s = Integer.valueOf(z[0]),w = Integer.valueOf(z[1]);
+        int r[][] = new int[s][2];
+        while(0<s--){ z =  br.readLine().split(" ");
+            r[s][0]=Integer.valueOf(z[0]);r[s][1]=Integer.valueOf(z[1]);}
+        Arrays.sort(r,(a,b)->a[0]-b[0]);
+        for(int i=0;i<r.length;i++)result(r,i,w,r[i][0],r[i][1]);
+        bw.write(max+"\n");
+        bw.flush();
     }
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n= sc.nextInt();
-        int k = sc.nextInt();
-        int r[][] = new int[n][2];
-        while (0<n--){r[n][0]= sc.nextInt();r[n][1]=sc.nextInt();}
-        Arrays.sort(r,(o1,o2)->o1[1]-o2[1]);
-        doCombination(r,k,0,r.length-1,0);
-
-        System.out.println(max);
+    public static void result(int r[][],int index,int w,int myw,int sum){
+        if(max<sum)max=sum;
+        for(int i=index;i<r.length;i++){
+            if(myw+r[i][0]>w)continue;
+            else
+            result(r,i,w,myw+r[i][0],sum+r[i][1]);
+        }
     }
 }
+
 
